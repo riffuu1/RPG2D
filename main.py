@@ -43,7 +43,7 @@ while running:
     screen.blit(background, (0, 0))
 
     player.update(keys)
-
+    player.limit_movements(Width, Height)
 
     player.draw()
     player.show_pv()

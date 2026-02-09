@@ -43,6 +43,16 @@ class Player:
             frames.append(image)
         return frames
 
+    def limit_movements(self,Width,Height):
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.right > Width:
+            self.rect.right = Width
+        if self.rect.top < 0:
+            self.rect.top = 0
+        if self.rect.bottom > Height:
+            self.rect.bottom = Height
+
     def get_frame(self):
         self.frame_index += self.frame_speed
         if self.frame_index >= len(self.current_animation):
@@ -53,25 +63,25 @@ class Player:
     def update(self,keys):
         en_mouvement = False
 
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_UP] or keys[pygame.K_w]:
             self.rect.y -= self.vitesse
             self.current_animation = self.animations["walk_up"]
             self.derniere_direction = "back"
             en_mouvement = True
 
-        if keys[pygame.K_DOWN]:
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             self.rect.y += self.vitesse
             self.current_animation = self.animations["walk_down"]
             self.derniere_direction = "front"
             en_mouvement = True
 
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             self.rect.x -= self.vitesse
             self.current_animation = self.animations["walk_left"]
             self.derniere_direction = "left"
             en_mouvement = True
 
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.rect.x += self.vitesse
             self.current_animation = self.animations["walk_right"]
             self.derniere_direction = "right"
