@@ -15,21 +15,25 @@ pygame.display.set_caption("Aurore et le trésore de l'aurore")
 #=====================
 # Background
 #======================
-backround = pygame.image.load('assetes/Background/House.png')
+backround = pygame.image.load('assets/Background/House.png')
 background = pygame.transform.scale(backround, (Width, Height))
 
+#=====================
+# Collision
+#=====================
+obstacle_color = [(0,0,0)]
 
 #=================
 # Le joueur
 #=================
-dossier_perso = "./assetes/Joueur"
+dossier_perso = "./assets/Joueur"
 player = Player(screen, dossier_perso)
 
 
 #====================
 # L'ennemi
 #====================
-image_path = "./assetes/Ennemies/ghost.png"
+image_path = "assets/Ennemies/ghost.png"
 enemy_1 = Enemy(screen,"ghost", image_path,34,56,100)
 
 #======================
@@ -47,7 +51,13 @@ while running:
 
 
     keys = pygame.key.get_pressed()
+    old_pos = player.rect.topleft
     screen.blit(background, (0, 0))
+
+    for color in obstacle_color:
+        if player.detect_collision_color(backround, color, Width, Height):
+            player.rect.topleft = old_pos  # Remettre à l'ancienne position si il y a une collision
+            break
 
     player.update(keys)
     player.limit_movements(Width, Height)

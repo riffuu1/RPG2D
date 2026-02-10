@@ -53,6 +53,15 @@ class Player:
         if self.rect.bottom > Height:
             self.rect.bottom = Height
 
+    def detect_collision_color(self, map, color, LARGEUR, HAUTEUR):
+        for x in range(self.rect.x, self.rect.x + self.rect.width):
+            for y in range(self.rect.y, self.rect.y + self.rect.height):
+                if 0 <= x < LARGEUR and 0 <= y < HAUTEUR:
+                    pixel_color = map.bg_image.get_at((x, y))[:3]
+                    if pixel_color == color:
+                        return True
+        return False
+
     def get_frame(self):
         self.frame_index += self.frame_speed
         if self.frame_index >= len(self.current_animation):
