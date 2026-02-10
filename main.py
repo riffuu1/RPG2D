@@ -1,5 +1,6 @@
 import pygame
 from player import Player
+from enemies import Enemy
 
 pygame.init()
 
@@ -7,7 +8,7 @@ pygame.init()
 # ======================
 # La fenêtre
 #=======================
-Width, Height = 640, 480
+Width, Height = 960,540
 screen = pygame.display.set_mode((Width, Height))
 pygame.display.set_caption("Aurore et le trésore de l'aurore")
 
@@ -24,6 +25,12 @@ background = pygame.transform.scale(backround, (Width, Height))
 dossier_perso = "./assetes/Joueur"
 player = Player(screen, dossier_perso)
 
+
+#====================
+# L'ennemi
+#====================
+image_path = "./assetes/Ennemies/ghost.png"
+enemy_1 = Enemy(screen,"ghost", image_path,34,56,100)
 
 #======================
 # Boucle Principale
@@ -47,6 +54,9 @@ while running:
 
     player.draw()
     player.show_pv()
+
+    enemy_1.draw()
+    enemy_1.move(player)
 
     pygame.display.flip()
     clock.tick(60)

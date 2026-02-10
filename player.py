@@ -14,7 +14,7 @@ class Player:
         self.y = self.start_y
 
         self.vitesse = 2
-        self.rect = pygame.Rect(self.x, self.y, 64,64)
+        self.rect = pygame.Rect(self.x, self.y, 128,128)
 
         self.frame_index = 0
         self.frame_speed = 0.05
@@ -90,6 +90,7 @@ class Player:
         if not en_mouvement:
             self.current_animation = self.animations[f"idle_{self.derniere_direction}"]
 
+        self.limit_movements(self.screen.get_width(), self.screen.get_height())
     def show_pv(self,):
         font =pygame.font.Font(None,36)
         pv_text = font.render(f"PV: {self.pv}", True, (255,255,255))
