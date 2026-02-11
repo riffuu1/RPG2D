@@ -1,5 +1,6 @@
 import pygame
 import os
+from collision_player import *
 
 class Player:
     def __init__(self,screen, dossier_perso,pv=100):
@@ -19,6 +20,7 @@ class Player:
         self.frame_index = 0
         self.frame_speed = 0.05
         self.derniere_direction = "front"
+        self.feet = pygame.Rect(self.x + 54, self.y + 118, 20, 10)
 
         self.animations = {
             "idle_left" : self.charger_animation(dossier_perso, ["left.png"]),
@@ -53,14 +55,7 @@ class Player:
         if self.rect.bottom > Height:
             self.rect.bottom = Height
 
-    def detect_collision_color(self, map, color, LARGEUR, HAUTEUR):
-        for x in range(self.rect.x, self.rect.x + self.rect.width):
-            for y in range(self.rect.y, self.rect.y + self.rect.height):
-                if 0 <= x < LARGEUR and 0 <= y < HAUTEUR:
-                    pixel_color = map.bg_image.get_at((x, y))[:3]
-                    if pixel_color == color:
-                        return True
-        return False
+
 
     def get_frame(self):
         self.frame_index += self.frame_speed
@@ -68,8 +63,26 @@ class Player:
             self.frame_index = 0
         return self.current_animation[int(self.frame_index)]
 
+    def collision_pieds(self, surface, objects):
+        px, py = self.feet.center
+
+        # Collision par couleur sur la map
+        if check_collision_with_color(surface, px, py):
+            return True
+
+        # Collision avec les objets
+        for obj in objects:
+            if self.feet.colliderect(obj.rect):
+                return True
+
+        return False
+
+
         #Déplacement
-    def update(self,keys):
+    def update(self,keys, map_surface, map_objects):
+
+        old_x = self.rect.x
+        old_y = self.rect.y
         en_mouvement = False
 
         if keys[pygame.K_UP] or keys[pygame.K_w]:
@@ -84,6 +97,14 @@ class Player:
             self.derniere_direction = "front"
             en_mouvement = True
 
+        # update feet
+        self.feet.x = self.rect.x + 54
+        self.feet.y = self.rect.y + 118
+
+        # collision sur Y → rollback seulement Y
+        if self.collision_pieds(map_surface, map_objects):
+            self.rect.y = old_y
+
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             self.rect.x -= self.vitesse
             self.current_animation = self.animations["walk_left"]
@@ -95,6 +116,14 @@ class Player:
             self.current_animation = self.animations["walk_right"]
             self.derniere_direction = "right"
             en_mouvement = True
+
+        # update feet
+        self.feet.x = self.rect.x + 54
+        self.feet.y = self.rect.y + 118
+
+        # collision sur X → rollback seulement X
+        if self.collision_pieds(map_surface, map_objects):
+            self.rect.x = old_x
 
         if not en_mouvement:
             self.current_animation = self.animations[f"idle_{self.derniere_direction}"]

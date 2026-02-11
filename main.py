@@ -1,6 +1,7 @@
 import pygame
 from player import Player
 from enemies import Enemy
+from map import Map
 
 pygame.init()
 
@@ -18,6 +19,7 @@ pygame.display.set_caption("Aurore et le trésore de l'aurore")
 backround = pygame.image.load('assets/Background/House.png')
 background = pygame.transform.scale(backround, (Width, Height))
 
+
 #=====================
 # Collision
 #=====================
@@ -34,7 +36,12 @@ player = Player(screen, dossier_perso)
 # L'ennemi
 #====================
 image_path = "assets/Ennemies/ghost.png"
-enemy_1 = Enemy(screen,"ghost", image_path,34,56,100)
+
+#======================
+# La Map de base
+#=====================
+current_map = Map(800, 600, background, "map1")
+
 
 #======================
 # Boucle Principale
@@ -54,19 +61,17 @@ while running:
     old_pos = player.rect.topleft
     screen.blit(background, (0, 0))
 
-    for color in obstacle_color:
-        if player.detect_collision_color(backround, color, Width, Height):
-            player.rect.topleft = old_pos  # Remettre à l'ancienne position si il y a une collision
-            break
 
-    player.update(keys)
+
+    player.update(keys,current_map.get_surface(), current_map.objects)
     player.limit_movements(Width, Height)
+
+
 
     player.draw()
     player.show_pv()
 
-    enemy_1.draw()
-    enemy_1.move(player)
+
 
     pygame.display.flip()
     clock.tick(60)
