@@ -10,6 +10,7 @@ class Player:
         self.start_y = 150
         self.pv = pv
         self.max_pv = pv
+        self.inventory = []
 
         self.x = self.start_x
         self.y = self.start_y
@@ -143,6 +144,21 @@ class Player:
         pygame.draw.rect(self.screen,(0,255,0), (bar_x,bar_y,pv_width,bar_height))
 
         self.screen.blit(pv_text, (bar_x,bar_y))
+
+    def add_item(self,item):
+        self.inventory.append(item)
+
+    def remove_item(self,item):
+        self.inventory.remove(item)
+
+    def use_item(self,item):
+        if item in self.inventory:
+            item.use(self)
+            self.remove_item(item)
+
+    def has_item(self,item_class):
+        return any(isinstance(i, item_class) for i in self.inventory)
+
 
     def draw(self):
         self.screen.blit(self.get_frame(), self.rect)
