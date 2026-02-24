@@ -47,6 +47,8 @@ current_map = Map(800, 600, background, "map1")
 # Boucle Principale
 #======================
 
+
+
 clock = pygame.time.Clock()
 running = True
 
