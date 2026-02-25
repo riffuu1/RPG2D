@@ -2,6 +2,7 @@ import pygame
 from player import Player
 from enemies import Enemy
 from map import Map
+from Menu import create_menu
 
 pygame.init()
 
@@ -36,7 +37,7 @@ player = Player(screen, dossier_perso)
 # L'ennemi
 #====================
 image_path = "assets/Ennemies/ghost.png"
-
+enemy_1 = Enemy(screen,"ghost", image_path,34,56,100)
 #======================
 # La Map de base
 #=====================
@@ -47,6 +48,9 @@ current_map = Map(800, 600, background, "map1")
 # Boucle Principale
 #======================
 
+FONT = pygame.font.Font(None, 36)
+BIG_FONT = pygame.font.Font(None, 64)
+menu = create_menu(screen, FONT, BIG_FONT)
 
 
 clock = pygame.time.Clock()
@@ -72,6 +76,9 @@ while running:
 
     player.draw()
     player.show_pv()
+
+    menu.update(events)
+    menu.draw(screen)
 
 
 
