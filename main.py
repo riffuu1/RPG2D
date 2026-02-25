@@ -52,7 +52,6 @@ FONT = pygame.font.Font(None, 36)
 BIG_FONT = pygame.font.Font(None, 64)
 menu = create_menu(screen, FONT, BIG_FONT)
 
-
 clock = pygame.time.Clock()
 running = True
 
