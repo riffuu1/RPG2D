@@ -122,6 +122,8 @@ class Player:
         self.feet.x = self.rect.x + 54
         self.feet.y = self.rect.y + 118
 
+
+
         # collision sur X → rollback seulement X
         if self.collision_pieds(map_surface, map_objects):
             self.rect.x = old_x
