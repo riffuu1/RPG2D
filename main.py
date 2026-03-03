@@ -1,7 +1,10 @@
 import pygame
+from pygame.examples.moveit import GameObject
+
 from player import Player
 from enemies import Enemy
 from map import *
+from Objects import *
 
 
 pygame.init()
@@ -32,11 +35,22 @@ background_chest_1 = pygame.transform.scale(background_chest_1, (Width, Height))
 #=====================
 obstacle_color = [(0,0,0)]
 
+#============================
+# Les Objets
+#============================
+bed = pygame.image.load('assets/Background/Objects_deco/bed.png')
+bed = pygame.transform.scale(bed, (250,250))
+shelve = pygame.image.load('assets/Background/Objects_deco/librairie.png')
+shelve = pygame.transform.scale(shelve, (250,250))
+
+
+obj1 = Object(bed,720,50)
+obj2 = Object(shelve,0,50)
 #=================
 # Le joueur
 #=================
-dossier_perso = "./assets/Joueur"
-player = Player(screen, dossier_perso)
+folder_player = "./assets/Joueur"
+player = Player(screen, folder_player)
 
 
 #====================
@@ -49,10 +63,10 @@ enemies = [enemy_1]
 #======================
 # La Map de base
 #=====================
-map4 = Map(800,600,background_house,"map_4",[])
-map1 = Map(800,600,background_house_outside,"map_1",[])
-map2 = Map(800,600,background_map_2,"map_2",[])
-map3 = Map(800,600,background_chest_1,"map_3",[])
+map4 = Map(800,600,background_house,"map_4",[obj1,obj2],[])
+map1 = Map(800,600,background_house_outside,"map_1",[],[])
+map2 = Map(800,600,background_map_2,"map_2",[],[enemy_1])
+map3 = Map(800,600,background_chest_1,"map_3",[],[])
 maps = [map1,map2,map3,map4]
 
 current_map = map4
@@ -79,17 +93,19 @@ while running:
 
 
 
-    player.update(keys,current_map.get_surface(), current_map.objects,enemies)
+    player.update(keys,current_map.get_surface(), current_map.objects,current_map.enemies)
     print(player.rect.topleft)
-    player.limit_movements(Width, Height)
+
+
     current_map = Map.switch_map(current_map,player,map1,map2,map3,map4)
 
 
     current_map.draw(screen)
+    for enemy in current_map.enemies:
+        enemy.move(player)
     player.draw()
     player.show_pv()
-    enemy_1.move(player)
-    enemy_1.draw()
+
 
 
 

@@ -19,7 +19,7 @@ class Enemy:
         self.attack_cooldown = 1000
         self.last_attack_time = 0
 
-    def draw(self):
+    def draw(self,screen):
         if self.actif:
             self.screen.blit(self.image, self.rect)
 

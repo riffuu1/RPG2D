@@ -150,7 +150,7 @@ class Player:
         if not en_mouvement:
             self.current_animation = self.animations[f"idle_{self.derniere_direction}"]
 
-        self.limit_movements(self.screen.get_width(), self.screen.get_height())
+
     def show_pv(self,):
         font =pygame.font.Font(None,36)
         pv_text = font.render(f"PV: {self.pv}", True, (255,255,255))

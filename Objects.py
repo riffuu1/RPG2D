@@ -1,14 +1,14 @@
 import pygame
 
 class Object():
-    def __init__(self, x, y, image):
+    def __init__(self, image, x, y):
         self.rect = image.get_rect(topleft=(x, y))
         self.image = image
         self.active = True
 
-    def draw(self):
+    def draw(self, screen):
         if self.active:
-            self.image.blit(self.image, (self.x, self.y))
+            screen.blit(self.image, self.rect)
 
     def interact(self):
         pass
