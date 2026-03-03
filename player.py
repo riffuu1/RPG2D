@@ -18,6 +18,13 @@ class Player:
         self.vitesse = 2
         self.rect = pygame.Rect(self.x, self.y, 128,128)
 
+        # With the help of chat Gpt to make it more professional:
+        # the +40 is to make the hitbox in the center horizontally
+        # the +70 go near to the feet
+        # and the 48 and 50 => 48*50 => the size of the body
+        self.hitbox = pygame.Rect(self.rect.x + 40,self.rect.y + 70,48,50)
+
+
         self.frame_index = 0
         self.frame_speed = 0.05
         self.derniere_direction = "front"
@@ -64,7 +71,7 @@ class Player:
             self.frame_index = 0
         return self.current_animation[int(self.frame_index)]
 
-    def collision_pieds(self, surface, objects):
+    def collision_pieds(self, surface, objects, enemies):
         px, py = self.feet.center
 
         # Collision par couleur sur la map
@@ -76,11 +83,15 @@ class Player:
             if self.feet.colliderect(obj.rect):
                 return True
 
+        for enemy in enemies:
+            if enemy.actif and self.hitbox.colliderect(enemy.hitbox):
+                return True
+
         return False
 
 
         #Déplacement
-    def update(self,keys, map_surface, map_objects):
+    def update(self,keys, map_surface, map_objects,enemies):
 
         old_x = self.rect.x
         old_y = self.rect.y
@@ -98,13 +109,18 @@ class Player:
             self.derniere_direction = "front"
             en_mouvement = True
 
+        self.hitbox.x = self.rect.x+40
+        self.hitbox.y = self.rect.y+70
+
         # update feet
         self.feet.x = self.rect.x + 54
         self.feet.y = self.rect.y + 118
 
         # collision sur Y → rollback seulement Y
-        if self.collision_pieds(map_surface, map_objects):
+        if self.collision_pieds(map_surface, map_objects,enemies):
             self.rect.y = old_y
+            self.hitbox.y = old_y + 70
+            self.feet.y = old_y + 118
 
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             self.rect.x -= self.vitesse
@@ -122,11 +138,14 @@ class Player:
         self.feet.x = self.rect.x + 54
         self.feet.y = self.rect.y + 118
 
-
+        self.hitbox.x = self.rect.x + 40
+        self.hitbox.y = self.rect.y + 70
 
         # collision sur X → rollback seulement X
-        if self.collision_pieds(map_surface, map_objects):
+        if self.collision_pieds(map_surface, map_objects,enemies):
             self.rect.x = old_x
+            self.hitbox.x = old_x + 40
+            self.feet.x = old_x + 54
 
         if not en_mouvement:
             self.current_animation = self.animations[f"idle_{self.derniere_direction}"]

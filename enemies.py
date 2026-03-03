@@ -14,27 +14,49 @@ class Enemy:
         self.x = x
         self.y = y
         self.rect = self.image.get_rect(topleft=(x, y))
+        self.hitbox = pygame.Rect(self.rect.x + 40, self.rect.y + 70, 48, 50)
         self.actif = True
+        self.attack_cooldown = 1000
+        self.last_attack_time = 0
 
     def draw(self):
         if self.actif:
             self.screen.blit(self.image, self.rect)
 
 #=====================
-# Réaliser par Chat GPT
+# With the help of Chat GPT
 #======================
     def move(self,player):
-        dx = player.rect.x - self.rect.x
-        dy = player.rect.y - self.rect.y
+        dx = player.rect.centerx - self.rect.centerx
+        dy = player.rect.centery - self.rect.centery
 
         distance = math.hypot(dx, dy)
+
+        if distance == 0:
+            return
 
         if distance <= 200:  # évite division par zéro
             dx /= distance
             dy /= distance
 
-            self.rect.x += dx * self.vitesse
-            self.rect.y += dy * self.vitesse
+            future_hitbox = self.hitbox.copy()
+            future_hitbox.x += dx * self.vitesse
+            future_hitbox.y += dy * self.vitesse
+
+
+
+            if not future_hitbox.colliderect(player.hitbox):
+                self.rect.x += dx * self.vitesse
+                self.rect.y += dy * self.vitesse
+
+                self.hitbox.x = self.rect.x + 40
+                self.hitbox.y = self.rect.y + 70
+
+            else:
+                current_time = pygame.time.get_ticks()
+                if current_time - self.last_attack_time >= self.attack_cooldown:
+                    player.pv = player.pv - 10
+                    self.last_attack_time =current_time
 
 
 

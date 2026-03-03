@@ -43,7 +43,9 @@ player = Player(screen, dossier_perso)
 # L'ennemi
 #====================
 image_path = "assets/Ennemies/ghost.png"
-enemy_1 = Enemy(screen,"ghost", image_path,233,200,100)
+enemy_1 = Enemy(screen,"ghost", image_path,600,200,100)
+
+enemies = [enemy_1]
 #======================
 # La Map de base
 #=====================
@@ -77,7 +79,7 @@ while running:
 
 
 
-    player.update(keys,current_map.get_surface(), current_map.objects)
+    player.update(keys,current_map.get_surface(), current_map.objects,enemies)
     print(player.rect.topleft)
     player.limit_movements(Width, Height)
     current_map = Map.switch_map(current_map,player,map1,map2,map3,map4)
