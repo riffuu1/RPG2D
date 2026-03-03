@@ -49,7 +49,6 @@ class Map:
             if current_map == map3:
                 player.rect.y = 0
                 return map2
-
         return current_map
 
     def get_surface(self):

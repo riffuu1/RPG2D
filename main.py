@@ -43,7 +43,7 @@ player = Player(screen, dossier_perso)
 # L'ennemi
 #====================
 image_path = "assets/Ennemies/ghost.png"
-enemy_1 = Enemy(screen,"ghost", image_path,34,56,100)
+enemy_1 = Enemy(screen,"ghost", image_path,233,200,100)
 #======================
 # La Map de base
 #=====================
@@ -86,6 +86,8 @@ while running:
     current_map.draw(screen)
     player.draw()
     player.show_pv()
+    enemy_1.move(player)
+    enemy_1.draw()
 
 
 
