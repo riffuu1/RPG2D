@@ -20,8 +20,7 @@ class PickableObject(Object):
         super().__init__(image,x,y)
         self.item = item
 
-    def interact(self,player,keys):
-        if self.rect.colliderect(player.feet):
-            if keys[pygame.K_e]:
-                player.add_item(self.item)
-                self.active = False
+    def interact(self, player, e_pressed):
+        if self.active and self.rect.colliderect(player.feet) and e_pressed:
+            player.add_item(self.item)
+            self.active = False

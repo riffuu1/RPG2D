@@ -63,10 +63,10 @@ pickable_potion = PickableObject(400, 300, potion_image, potion_item)
 # ======================
 # Maps
 # ======================
-map4 = Map(800,600,background_house,"map_4",[obj1,obj2],[pickable_potion])
-map1 = Map(800,600,background_house_outside,"map_1",[],[])
-map2 = Map(800,600,background_map_2,"map_2",[],[enemy_1])
-map3 = Map(800,600,background_chest_1,"map_3",[],[])
+map4 = Map(800,600,background_house,"map_4",[obj1,obj2],[pickable_potion],[])
+map1 = Map(800,600,background_house_outside,"map_1",[],[],[])
+map2 = Map(800,600,background_map_2,"map_2",[],[],[enemy_1])
+map3 = Map(800,600,background_chest_1,"map_3",[],[],[])
 maps = [map1,map2,map3,map4]
 
 current_map = map4
@@ -77,17 +77,24 @@ current_map = map4
 clock = pygame.time.Clock()
 running = True
 
+e_pressed = False
+
 while running:
     events = pygame.event.get()
     keys = pygame.key.get_pressed()
 
-    # Gestion des événements
+    # Détection appui unique sur E
     for event in events:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_i:  # ouvrir l'inventaire
+            if event.key == pygame.K_e:
+                e_pressed = True
+            if event.key == pygame.K_i:
                 inventory_menu(screen, pygame.font.Font(None,36), player)
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_e:
+                e_pressed = False
 
     # Mise à jour joueur
     player.update(keys, current_map.get_surface(), current_map.objects, current_map.enemies)
@@ -105,9 +112,9 @@ while running:
 
     # Interactions avec les objets ramassables
     for obj in current_map.pickable_objects:
-        obj.interact(player, keys)
+        obj.interact(player, e_pressed)
 
-    # Déplacement des ennemis
+        # Déplacement des ennemis
     for enemy in current_map.enemies:
         enemy.move(player)
 
