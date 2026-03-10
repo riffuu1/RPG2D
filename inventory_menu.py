@@ -39,10 +39,18 @@ def inventory_menu(screen, font, player: Player):
                 screen.blit(text, (50, y))
             else:
                 for i, item in enumerate(player.inventory):
-                    color = (255,255,0) if i == selected_index else (255,255,255)
+
+                    color = (255, 255, 0) if i == selected_index else (255, 255, 255)
+
+                    # image
+                    if item.image:
+                        screen.blit(item.image, (50, y))
+
+                    # texte
                     text = font.render(item.name, True, color)
-                    screen.blit(text, (50, y))
-                    y += 40
+                    screen.blit(text, (100, y + 10))
+
+                    y += 50
 
             pygame.display.flip()
             clock.tick(60)

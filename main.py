@@ -55,9 +55,10 @@ enemies = [enemy_1]
 # Objets ramassables
 # ======================
 # Exemple : une potion sur la map
-potion_item = Potion("Potion")
+
 potion_image = pygame.image.load("assets/Background/Items/heal potion.png")
 potion_image = pygame.transform.scale(potion_image, (50,50))
+potion_item = Potion("Potion", potion_image)
 pickable_potion = PickableObject(400, 300, potion_image, potion_item)
 
 # ======================
@@ -103,26 +104,24 @@ while running:
     current_map = Map.switch_map(current_map, player, map1, map2, map3, map4)
 
     # Interactions avec objets ramassables
-    for obj in current_map.objects:
-        if isinstance(obj, PickableObject):
-            obj.interact(player, keys)
+
 
     # Dessin de la map
     current_map.draw(screen)
 
-    # Interactions avec les objets ramassables
+    # Interactions with pickable objects
     for obj in current_map.pickable_objects:
         obj.interact(player, e_pressed)
 
-        # Déplacement des ennemis
+        # Enemy's moves
     for enemy in current_map.enemies:
         enemy.move(player)
 
-    # Dessin du joueur et PV
+    # draw player and pv
     player.draw()
     player.show_pv()
 
-    # Rafraîchissement écran
+    # Screen refresh
     pygame.display.flip()
     clock.tick(60)
 
