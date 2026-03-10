@@ -1,6 +1,9 @@
 import pygame
 import os
 from collision_player import *
+from Item import Item
+from enemies import *
+
 
 class Player:
     def __init__(self,screen, dossier_perso,pv=100):
@@ -84,7 +87,7 @@ class Player:
                 return True
 
         for enemy in enemies:
-            if enemy.actif and self.hitbox.colliderect(enemy.hitbox):
+            if isinstance(enemy, Enemy) and enemy.actif and self.hitbox.colliderect(enemy.hitbox):
                 return True
 
         return False
@@ -166,16 +169,12 @@ class Player:
 
         self.screen.blit(pv_text, (bar_x,bar_y))
 
-    def add_item(self,item):
+    def add_item(self,item : Item):
         self.inventory.append(item)
 
-    def remove_item(self,item):
+    def remove_item(self,item : Item):
         self.inventory.remove(item)
 
-    def use_item(self,item):
-        if item in self.inventory:
-            item.use(self)
-            self.remove_item(item)
 
     def has_item(self,item_class):
         return any(isinstance(i, item_class) for i in self.inventory)

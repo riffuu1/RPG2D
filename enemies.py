@@ -1,6 +1,6 @@
 import pygame
 import os
-from player import Player
+
 import math
 
 class Enemy:
