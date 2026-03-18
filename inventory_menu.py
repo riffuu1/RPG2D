@@ -1,56 +1,59 @@
 import pygame
 from player import Player
-from Item import Item
-
+from Item import Potion, Weapon, Key
 
 def inventory_menu(screen, font, player: Player):
-
     running = True
     clock = pygame.time.Clock()
     selected_index = 0
+
     while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key in (pygame.K_i, pygame.K_ESCAPE):
+                    running = False
 
-                if event.type == pygame.KEYDOWN:
-                    if event.key in (pygame.K_i, pygame.K_ESCAPE):
-                        running = False
-                    if event.key == pygame.K_UP:
+                if event.key == pygame.K_UP:
+                    selected_index = max(0, selected_index - 1)
+                if event.key == pygame.K_DOWN:
+                    selected_index = min(len(player.inventory) - 1, selected_index + 1)
+
+                if event.key == pygame.K_e and player.inventory:
+                    item = player.inventory[selected_index]
+
+                    # Utilisation selon type
+                    if isinstance(item, Potion):
+                        item.use(player)        # récupère PV
+                        player.inventory.pop(selected_index)  # potion consommée
                         selected_index = max(0, selected_index - 1)
-                    if event.key == pygame.K_DOWN:
-                        selected_index = min(len(player.inventory)-1, selected_index+1)
-                    if event.key == pygame.K_e and player.inventory:
-                        item = player.inventory.pop(selected_index)
-                        item.use(player)
-                        selected_index = max(0, selected_index-1)
+                    elif isinstance(item, Weapon):
+                        player.equip_item(item)  # équipe/déséquipe l'arme
+                    elif isinstance(item, Key):
+                        print(f"{item.name} est juste dans l’inventaire")  # pas de suppression
 
-            # Fond semi-transparent
-            overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
-            overlay.fill((0,0,0,180))
-            screen.blit(overlay, (0,0))
+        # Fond semi-transparent
+        overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 180))
+        screen.blit(overlay, (0, 0))
 
-            # Affichage des objets
-            y = 150
-            if not player.inventory:
-                text = font.render("Inventaire vide", True, (255,255,255))
-                screen.blit(text, (50, y))
-            else:
-                for i, item in enumerate(player.inventory):
+        # Affichage inventaire
+        y = 150
+        if not player.inventory:
+            text = font.render("Inventaire vide", True, (255, 255, 255))
+            screen.blit(text, (50, y))
+        else:
+            for i, item in enumerate(player.inventory):
+                color = (255, 255, 0) if i == selected_index else (255, 255, 255)
 
-                    color = (255, 255, 0) if i == selected_index else (255, 255, 255)
+                if item.image:
+                    screen.blit(item.image, (50, y))
+                text = font.render(item.name, True, color)
+                screen.blit(text, (100, y + 10))
+                y += 50
 
-                    # image
-                    if item.image:
-                        screen.blit(item.image, (50, y))
-
-                    # texte
-                    text = font.render(item.name, True, color)
-                    screen.blit(text, (100, y + 10))
-
-                    y += 50
-
-            pygame.display.flip()
-            clock.tick(60)
+        pygame.display.flip()
+        clock.tick(60)

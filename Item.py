@@ -18,3 +18,12 @@ class Key(Item):
     def __init__(self, name, key_id, image_path=None):
         super().__init__(name, image_path)
         self.key_id = key_id
+
+class Weapon(Item):
+    def __init__(self, name, damage, image):
+        super().__init__(name, image)
+        self.damage = damage
+
+    def equip(self, player):
+        # Ici on ne consomme pas l'arme
+        print(f"{self.name} équipée")

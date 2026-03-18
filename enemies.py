@@ -26,12 +26,14 @@ class Enemy:
 #=====================
 # With the help of Chat GPT
 #======================
-    def move(self,player):
+    def move(self, player):
+        if not self.actif:
+            return  # ← Ne fait rien si l'ennemi est mort
+
         dx = player.rect.centerx - self.rect.centerx
         dy = player.rect.centery - self.rect.centery
 
         distance = math.hypot(dx, dy)
-
         if distance == 0:
             return
 
@@ -43,8 +45,6 @@ class Enemy:
             future_hitbox.x += dx * self.vitesse
             future_hitbox.y += dy * self.vitesse
 
-
-
             if not future_hitbox.colliderect(player.hitbox):
                 self.rect.x += dx * self.vitesse
                 self.rect.y += dy * self.vitesse
@@ -55,8 +55,8 @@ class Enemy:
             else:
                 current_time = pygame.time.get_ticks()
                 if current_time - self.last_attack_time >= self.attack_cooldown:
-                    player.pv = player.pv - 10
-                    self.last_attack_time =current_time
+                    player.pv -= 10
+                    self.last_attack_time = current_time
 
 
 
