@@ -9,11 +9,11 @@ from Item import Item, Potion, Key, Weapon
 pygame.init()
 
 # ======================
-# Fenêtre
+# Window
 # ======================
 Width, Height = 960, 540
 screen = pygame.display.set_mode((Width, Height))
-pygame.display.set_caption("Aurore et le trésor de l'aurore")
+pygame.display.set_caption("Aurora and the Treasure of Dawn")
 
 # ======================
 # Background
@@ -28,35 +28,35 @@ background_chest_1 = pygame.image.load('assets/Background/map_chest_1.png')
 background_chest_1 = pygame.transform.scale(background_chest_1, (Width, Height))
 
 # ======================
-# Objets décoratifs
+# Decorative objects
 # ======================
 bed = pygame.image.load('assets/Background/Objects_deco/bed.png')
 bed = pygame.transform.scale(bed, (250, 250))
-shelve = pygame.image.load('assets/Background/Objects_deco/librairie.png')
-shelve = pygame.transform.scale(shelve, (250, 250))
+shelf = pygame.image.load('assets/Background/Objects_deco/librairie.png')
+shelf = pygame.transform.scale(shelf, (250, 250))
 
-obj1 = Object(bed, 720, 50)
-obj2 = Object(shelve, 0, 50)
+obj1 = GameObject(bed, 720, 50)
+obj2 = GameObject(shelf, 0, 50)
 
 damage_image = pygame.image.load('assets/Background/Items/effect/slash.png')
 damage_image = pygame.transform.scale(damage_image, (100, 100))
 
 # ======================
-# Joueur
+# Player
 # ======================
 folder_player = "./assets/Joueur"
 player = Player(screen, folder_player)
 player.damage_image = damage_image
 
 # ======================
-# Ennemi
+# Enemy
 # ======================
 image_path = "assets/Ennemies/ghost.png"
 enemy_1 = Enemy(screen, "ghost", image_path, 600, 200, 100)
 enemies = [enemy_1]
 
 # ======================
-# Objets ramassables
+# Pickable objects
 # ======================
 potion_image = pygame.image.load("assets/Background/Items/heal potion.png")
 potion_image = pygame.transform.scale(potion_image, (50, 50))
@@ -80,7 +80,7 @@ maps = [map1, map2, map3, map4]
 current_map = map4
 
 # ======================
-# Boucle principale
+# Main loop
 # ======================
 clock = pygame.time.Clock()
 running = True
@@ -90,7 +90,7 @@ while running:
     keys = pygame.key.get_pressed()
     events = pygame.event.get()
 
-    # ================== Gestion des événements ==================
+    # ================== Event handling ==================
     for event in events:
         if event.type == pygame.QUIT:
             running = False
@@ -103,22 +103,22 @@ while running:
             if event.key == pygame.K_e:
                 e_pressed = False
 
-    # ================== Mise à jour ==================
+    # ================== Update ==================
     player.update(keys, current_map.get_surface(), current_map.objects, current_map.enemies)
     current_map = Map.switch_map(current_map, player, map1, map2, map3, map4)
 
-    # Interactions avec objets ramassables
+    # Interaction with pickable objects
     for obj in current_map.pickable_objects:
         obj.interact(player, e_pressed)
 
-    # Déplacements ennemis
+    # Enemy movement
     for enemy in current_map.enemies:
         enemy.move(player)
 
-    # ================== Dessin ==================
+    # ================== Drawing ==================
     current_map.draw(screen)
     player.draw()
-    player.show_pv()
+    player.show_hp()
 
     pygame.display.flip()
     clock.tick(60)

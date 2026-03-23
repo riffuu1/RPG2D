@@ -1,17 +1,17 @@
 import pygame
 
-class Item():
-    def __init__(self,name, image):
+class Item:
+    def __init__(self, name, image):
         self.name = name
         self.image = image
 
-    def use(self,player):
+    def use(self, player):
         print(f"Item {self.name} used")
 
 class Potion(Item):
     def use(self, player):
-        player.pv = min(player.max_pv, player.pv + 20)
-        print("Vous récupérez 20 PV")
+        player.hp = min(player.max_hp, player.hp + 20)
+        print("You recover 20 HP")
 
 
 class Key(Item):
@@ -25,5 +25,5 @@ class Weapon(Item):
         self.damage = damage
 
     def equip(self, player):
-        # Ici on ne consomme pas l'arme
-        print(f"{self.name} équipée")
+        # The weapon is not consumed here
+        print(f"{self.name} equipped")

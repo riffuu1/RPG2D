@@ -23,4 +23,8 @@ Lancer le fichier "main.py"
     Pause : Esc
     L'inventaire : I
     Prendre un objet: E
+    Utiliser un objet dans l’inventaire : E 
+    Equiper une arme dans l’inventaire : E 
+    Déséquiper une arme dans l’inventaire : E 
+    Attaquer : X
     

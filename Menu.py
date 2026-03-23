@@ -3,7 +3,6 @@ import sys
 import pygame_menu
 
 
-
 #----------------------
 # Start game
 #----------------------
@@ -11,7 +10,7 @@ import pygame_menu
 
 
 #----------------------
-# Menu principal
+# Main menu
 #----------------------
 def create_menu(screen, FONT, BIG_FONT):
     custom_theme = pygame_menu.Theme(
@@ -27,7 +26,7 @@ def create_menu(screen, FONT, BIG_FONT):
     )
 
     menu = pygame_menu.Menu(
-        "Aurore Et Le Tresor d'Aurore",
+        "Aurora and the Treasure of Dawn",
         screen.get_width() * 0.7,
         screen.get_height() * 0.7,
         theme=custom_theme

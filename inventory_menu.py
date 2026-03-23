@@ -25,25 +25,25 @@ def inventory_menu(screen, font, player: Player):
                 if event.key == pygame.K_e and player.inventory:
                     item = player.inventory[selected_index]
 
-                    # Utilisation selon type
+                    # Use according to type
                     if isinstance(item, Potion):
-                        item.use(player)        # récupère PV
-                        player.inventory.pop(selected_index)  # potion consommée
+                        item.use(player)        # recover HP
+                        player.inventory.pop(selected_index)  # potion consumed
                         selected_index = max(0, selected_index - 1)
                     elif isinstance(item, Weapon):
-                        player.equip_item(item)  # équipe/déséquipe l'arme
+                        player.equip_item(item)  # equip/unequip weapon
                     elif isinstance(item, Key):
-                        print(f"{item.name} est juste dans l’inventaire")  # pas de suppression
+                        print(f"{item.name} is just in the inventory")  # no removal
 
-        # Fond semi-transparent
+        # Semi-transparent background
         overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 180))
         screen.blit(overlay, (0, 0))
 
-        # Affichage inventaire
+        # Inventory display
         y = 150
         if not player.inventory:
-            text = font.render("Inventaire vide", True, (255, 255, 255))
+            text = font.render("Inventory empty", True, (255, 255, 255))
             screen.blit(text, (50, y))
         else:
             for i, item in enumerate(player.inventory):

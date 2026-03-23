@@ -6,55 +6,55 @@ class Map:
         self.height = height
         self.bg_image = bg_image
         self.bg_name = bg_name
-        self.objects = objects if objects else []               # décorations
-        self.pickable_objects = pickable_objects if pickable_objects else []  # ramassables
-        self.enemies = enemies if enemies else []              # uniquement les ennemis
+        self.objects = objects if objects else []               # decorative objects
+        self.pickable_objects = pickable_objects if pickable_objects else []  # pickable objects
+        self.enemies = enemies if enemies else []              # only enemies
 
     def draw(self, screen):
-        # Fond
+        # Background
         screen.blit(self.bg_image, (0, 0))
 
-        # Objets décoratifs
+        # Decorative objects
         for obj in self.objects:
             if hasattr(obj, "active") and not obj.active:
                 continue
             obj.draw(screen)
 
-        # Objets ramassables
+        # Pickable objects
         for obj in self.pickable_objects:
             if hasattr(obj, "active") and not obj.active:
                 continue
             obj.draw(screen)
 
-        # Ennemis
+        # Enemies
         for enemy in self.enemies:
             if hasattr(enemy, "active") and not enemy.active:
                 continue
             enemy.draw(screen)
 
     @staticmethod
-    def switch_map(current_map, player, map1, map2, map3, House):
-        # Left board
+    def switch_map(current_map, player, map1, map2, map3, house):
+        # Left border
         if player.rect.x == 0:
             if current_map == map1:
                 player.rect.x = map2.width - player.rect.width
                 return map2
 
-        # Right board
+        # Right border
         elif player.rect.x == 800:
             if current_map == map2:
                 player.rect.x = 0
                 return map1
 
-        # Up board
+        # Upper border
         elif player.rect.y == 0:
             if current_map == map2:
                 player.rect.y = 410
                 return map3
 
-        # Low board
+        # Lower border
         elif player.rect.y == 412:
-            if current_map == House:
+            if current_map == house:
                 player.rect.y = 300
                 return map1
             if current_map == map3:
