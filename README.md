@@ -20,7 +20,6 @@ Lancer le fichier "main.py"
     Déplacer à droite : →
     Déplacer en haut : ↑
     Déplacer en bas : ↓
-    Pause : Esc
     L'inventaire : I
     Prendre un objet: E
     Utiliser un objet dans l’inventaire : E 
