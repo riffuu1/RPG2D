@@ -56,10 +56,19 @@ class Map:
         elif player.rect.y == 412:
             if current_map == house:
                 player.rect.y = 300
+                player.rect.x = 528
                 return map1
             if current_map == map3:
                 player.rect.y = 0
                 return map2
+
+        # Go back home
+        elif current_map == map1:
+            if player.rect.x >= 474 and player.rect.x <=606:
+                if player.rect.y == 268:
+                    player. rect.y = 400
+                    player.rect.x = 622
+                    return house
 
         return current_map
 
